@@ -1,6 +1,6 @@
 from typing import Optional
 import tcod.event
-from action import Action, Escape, Movement
+from action import Action, Leave, Movement
 
 
 class EventHandler(tcod.event.EventDispatch[Action]):
@@ -13,15 +13,15 @@ class EventHandler(tcod.event.EventDispatch[Action]):
         key = event.sym
 
         if key == tcod.event.KeySym.UP or key == tcod.event.KeySym.w:
-            action = Movement(dx=0, dy=-1)
+            action = Movement(dx = 0, dy = -1)
         elif key == tcod.event.KeySym.DOWN or key == tcod.event.KeySym.s:
-            action = Movement(dx=0, dy=1)
+            action = Movement(dx = 0, dy = 1)
         elif key == tcod.event.KeySym.LEFT or key == tcod.event.KeySym.a:
-            action = Movement(dx=-1, dy=0)
+            action = Movement(dx = -1, dy = 0)
         elif key == tcod.event.KeySym.RIGHT or key == tcod.event.KeySym.d:
-            action = Movement(dx=1, dy=0)
+            action = Movement(dx = 1, dy = 0)
         elif key == tcod.event.K_ESCAPE:
-            action = Escape()
+            action = Leave()
 
         # No valid key was pressed
         return action

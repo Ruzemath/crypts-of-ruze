@@ -1,7 +1,7 @@
 class Action:
     pass
 
-class Escape(Action):
+class Leave(Action):
     pass
 
 class Movement(Action):
