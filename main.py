@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import tcod
 
-from action import Leave, Movement
+from generator import Generator
 from input_handler import EventHandler
 from entities import Entity
 
@@ -17,6 +17,8 @@ def main() -> None:
     event_handle = EventHandler() 
     player = Entity(int(screen_width/2), int(screen_height/2), "#", (255, 255, 255))
     npc = Entity(int((screen_width/2)-5), int(screen_height/2), "NPC", (0, 255, 0))
+    entities = {player, npc}
+    generator = Generator(entities, event_handle, player)
     
     # Console 
     with tcod.context.new_terminal(
@@ -28,21 +30,9 @@ def main() -> None:
     ) as context:
         root_console = tcod.console.Console(screen_width, screen_height, order = "F")
         while True:
-            root_console.print(x = player.x, y = player.y, string = player.entity_char, fg = player.color)
-            context.present(root_console)
-            root_console.clear()
-            
-            for event in tcod.event.wait():
-                action = event_handle.dispatch(event)
-
-                if action is None:
-                    continue
-
-                if isinstance(action, Movement):
-                    player.move(dx = action.dx, dy = action.dy)
-                elif isinstance(action, Leave):
-                    raise SystemExit()
-
+            generator.make(root_console, context)
+            events = tcod.event.wait()
+            generator.handle(events)
 
 if __name__ == "__main__":
     main()
