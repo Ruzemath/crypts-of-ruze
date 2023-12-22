@@ -1,7 +1,6 @@
 from typing import Set, Iterable, Any
 from tcod.context import Context
 from tcod.console import Console
-from action import Leave, Movement
 from entities import Entity
 from input_handler import EventHandler
 from map import DungeonMap
@@ -19,12 +18,8 @@ class Generator:
         
             if action is None:
                 continue
-            
-            if isinstance(action, Movement):
-                if self.dungeon_map.tiles["walkable"][self.player.x + action.dx, self.player.y + action.dy]:
-                    self.player.move(action.dx, action.dy)
-            elif isinstance(action, Leave):
-                    raise SystemExit()
+    
+            action.act(self, self.player)
     
     def make(self, console: Console, context: Context) -> None:
         self.dungeon_map.make(console)
