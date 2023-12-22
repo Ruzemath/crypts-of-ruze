@@ -20,7 +20,7 @@ class EventHandler(tcod.event.EventDispatch[Action]):
             action = Movement(dx = -1, dy = 0)
         elif key == tcod.event.KeySym.RIGHT or key == tcod.event.KeySym.d:
             action = Movement(dx = 1, dy = 0)
-        elif key == tcod.event.K_ESCAPE:
+        elif key == tcod.event.KeySym.ESCAPE:
             action = Leave()
 
         # No valid key was pressed
