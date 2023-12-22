@@ -6,13 +6,9 @@ if TYPE_CHECKING:
     from entities import Entity
 
 class Action:
-    def act(self, generator: Generator, entity: Entity) -> None:
+    def act(self, generator: Generator, entity: Entity) -> None: # Method is going to be overridden by its subclasses
         raise NotImplementedError()
-        """Perform this action with the objects needed to determine its scope.
-        `generator` is the scope this action is being performed in.
-        `entity` is the object performing the action.
-        This method must be overridden by Action subclasses.
-        """
+
 
 class Leave(Action):
     def act(self, generator: Generator, entity: Entity) -> None:
