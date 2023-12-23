@@ -1,4 +1,4 @@
-from typing import Set, Iterable, Any
+from typing import Iterable, Any
 from tcod.context import Context
 from tcod.console import Console
 from tcod.map import compute_fov
@@ -7,8 +7,7 @@ from input_handler import EventHandler
 from map import DungeonMap
 
 class Generator:
-    def __init__(self, entities: Set[Entity], event_handle: EventHandler, dungeon_map: DungeonMap, player: Entity):
-        self.entities = entities
+    def __init__(self, event_handle: EventHandler, dungeon_map: DungeonMap, player: Entity):
         self.event_handle = event_handle
         self.dungeon_map = dungeon_map
         self.player = player
