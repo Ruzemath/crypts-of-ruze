@@ -34,9 +34,6 @@ class Generator:
         
     def make(self, console: Console, context: Context) -> None:
         self.dungeon_map.make(console)
-        for entity in self.entities:
-            if self.dungeon_map.visible[entity.x, entity.y]:
-                console.print(entity.x, entity.y, entity.entity_char, fg = entity.color)
         
         context.present(console)
         console.clear()
