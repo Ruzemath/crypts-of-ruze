@@ -3,7 +3,6 @@ import copy
 import tcod
 import entity_list
 from generator import Generator
-from input_handler import EventHandler
 from entities import Entity
 from procedure_gen import generate_dungeon
 
@@ -18,10 +17,10 @@ def main() -> None:
     max_monsters_per_room = 2
 
     tileset = tcod.tileset.load_tilesheet("dejavu10x10_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD)
-    event_handle = EventHandler() 
     player = copy.deepcopy(entity_list.player)
-    dungeon_map = generate_dungeon(max_rooms, min_room_size, max_room_size, map_width, map_height, max_monsters_per_room, player)
-    generator = Generator(event_handle, dungeon_map, player)
+    generator = Generator(player)
+    generator.dungeon_map = generate_dungeon(max_rooms, min_room_size, max_room_size, map_width, map_height, max_monsters_per_room, generator)
+    generator.update()
     
     # Console 
     with tcod.context.new_terminal(
@@ -34,8 +33,7 @@ def main() -> None:
         root_console = tcod.console.Console(screen_width, screen_height, order = "F")
         while True:
             generator.make(root_console, context)
-            events = tcod.event.wait()
-            generator.handle(events)
+            generator.event_handle.handle()
 
 if __name__ == "__main__":
     main()

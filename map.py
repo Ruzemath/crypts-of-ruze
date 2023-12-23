@@ -4,10 +4,12 @@ import numpy as np
 from tcod.console import Console
 import tile_types
 if TYPE_CHECKING:
+    from generator import Generator
     from entities import Entity
 
 class DungeonMap:
-    def __init__(self, width: int, height: int, entities: Iterable[Entity] = ()):
+    def __init__(self, generator: Generator, width: int, height: int, entities: Iterable[Entity] = ()):
+        self.generator = generator
         self.width = width
         self.height = height
         self.entities = set(entities)
@@ -29,7 +31,7 @@ class DungeonMap:
         console.rgb[0:self.width, 0:self.height] = np.select(
             condlist = [self.visible, self.encountered],
             choicelist = [self.tiles["light"], self.tiles["dark"]],
-            default = tile_types.VOID
+            default = tile_types.VOID,
         )
         
         for entity in self.entities:

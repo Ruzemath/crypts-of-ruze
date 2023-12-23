@@ -6,7 +6,7 @@ import entity_list
 from map import DungeonMap
 from typing import Iterator, Tuple, List, TYPE_CHECKING
 if TYPE_CHECKING:
-    from entities import Entity
+    from generator import Generator
 
 class RectRoom:
     def __init__(self, x: int, y: int, width: int, height: int):
@@ -59,9 +59,10 @@ def L_tunnel(begin: Tuple[int, int], end: Tuple[int, int]) -> Iterator[Tuple[int
     
     
 def generate_dungeon(max_rooms: int, min_room_size: int, max_room_size: int, map_width: int, 
-                     map_height: int, max_monsters_per_room: int, player: Entity) -> DungeonMap:
+                     map_height: int, max_monsters_per_room: int, generator: Generator) -> DungeonMap:
     
-    dungeon = DungeonMap(map_width, map_height, [player])
+    player = generator.player
+    dungeon = DungeonMap(generator, map_width, map_height, [player])
     rooms: List[RectRoom] = []
 
     for r in range(max_rooms):
@@ -83,7 +84,7 @@ def generate_dungeon(max_rooms: int, min_room_size: int, max_room_size: int, map
         dungeon.tiles[new_room.inner] = tile_types.floor
 
         if len(rooms) == 0: # player room
-            player.x, player.y = new_room.center
+            player.place(*new_room.center, dungeon)
         else:  
             for x, y in L_tunnel(rooms[-1].center, new_room.center):
                 dungeon.tiles[x, y] = tile_types.floor
