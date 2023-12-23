@@ -13,6 +13,11 @@ class Generator:
         self.player = player
         self.update()
     
+    def handle_monster_turns(self) -> None:
+        for entity in self.dungeon_map.entities - {self.player}:
+             print(f'The {entity.name} wonders when it will get to take a real turn.')
+             
+             
     def handle(self, events: Iterable[Any]) -> None:
         for event in events:
             action = self.event_handle.dispatch(event)
@@ -21,7 +26,8 @@ class Generator:
                 continue
     
             action.act(self, self.player)
-            self.update() 
+            self.handle_monster_turns()
+            self.update() # Updates FOV
     
     def update(self) -> None: # Updates the fov of the player
         self.dungeon_map.visible[:] = compute_fov(
@@ -37,3 +43,5 @@ class Generator:
         
         context.present(console)
         console.clear()
+    
+    
