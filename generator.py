@@ -4,6 +4,7 @@ from tcod.context import Context
 from tcod.console import Console
 from tcod.map import compute_fov
 from input_handler import MainGameEventHandler
+from render_functions import render_bar
 if TYPE_CHECKING:
     from entities import Actor
     from map import DungeonMap
@@ -33,10 +34,11 @@ class Generator:
         
     def make(self, console: Console, context: Context) -> None:
         self.dungeon_map.make(console)
-        console.print(
-            x = 1,
-            y = 47,
-            string=f"HP: {self.player.fighter.hp}/{self.player.fighter.max_hp}",
+        render_bar(
+            console = console,
+            current_value = self.player.fighter.hp,
+            maximum_value = self.player.fighter.max_hp,
+            total_width = 20,
         )
         
         context.present(console)
