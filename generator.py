@@ -1,10 +1,9 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from tcod.context import Context
 from tcod.console import Console
 from tcod.map import compute_fov
 from input_handler import MainGameEventHandler
-from render_functions import render_bar
+from render_functions import render_bar, render_names_at_mouse_location
 from message_log import MessageLog
 if TYPE_CHECKING:
     from entities import Actor
@@ -18,6 +17,7 @@ class Generator:
         self.event_handle: EventHandler = MainGameEventHandler(self)
         self.player = player
         self.message_log = MessageLog()
+        self.mouse_location = (0, 0)
         
     def handle_monster_turns(self) -> None:
         for entity in set(self.dungeon_map.actors) - {self.player}:
@@ -34,7 +34,7 @@ class Generator:
         # If a tile is in FOV it should be seen as encountered too.
         self.dungeon_map.encountered |= self.dungeon_map.visible
         
-    def make(self, console: Console, context: Context) -> None:
+    def make(self, console: Console) -> None:
         self.dungeon_map.make(console)
         self.message_log.render(console, x = 21, y = 45, width = 40, height = 5)
         render_bar(
@@ -43,8 +43,4 @@ class Generator:
             maximum_value = self.player.fighter.max_hp,
             total_width = 20,
         )
-        
-        context.present(console)
-        console.clear()
-    
-    
+        render_names_at_mouse_location(console = console, x = 21, y = 44, generator = self)

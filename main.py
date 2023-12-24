@@ -34,8 +34,10 @@ def main() -> None:
     ) as context:
         root_console = tcod.console.Console(screen_width, screen_height, order = "F")
         while True:
-            generator.make(root_console, context)
-            generator.event_handle.handle()
+            root_console.clear()
+            generator.event_handle.on_render(console = root_console)
+            context.present(root_console)
+            generator.event_handle.handle(context)
 
 if __name__ == "__main__":
     main()
