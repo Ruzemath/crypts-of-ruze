@@ -5,6 +5,7 @@ from tcod.console import Console
 from tcod.map import compute_fov
 from input_handler import MainGameEventHandler
 from render_functions import render_bar
+from message_log import MessageLog
 if TYPE_CHECKING:
     from entities import Actor
     from map import DungeonMap
@@ -16,7 +17,8 @@ class Generator:
     def __init__(self, player: Actor):
         self.event_handle: EventHandler = MainGameEventHandler(self)
         self.player = player
-    
+        self.message_log = MessageLog()
+        
     def handle_monster_turns(self) -> None:
         for entity in set(self.dungeon_map.actors) - {self.player}:
             if entity.ai:
@@ -34,6 +36,7 @@ class Generator:
         
     def make(self, console: Console, context: Context) -> None:
         self.dungeon_map.make(console)
+        self.message_log.render(console, x = 21, y = 45, width = 40, height = 5)
         render_bar(
             console = console,
             current_value = self.player.fighter.hp,
