@@ -10,8 +10,8 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound = "Entity")
 # Class for all entities including player, items, enemies, and others
 class Entity:
-    dungeon_map: DungeonMap
-    def __init__(self, dungeon_map: Optional[DungeonMap] = None, x: int = 0, y: int = 0, 
+    parent: DungeonMap
+    def __init__(self, parent: Optional[DungeonMap] = None, x: int = 0, y: int = 0, 
                  char: str = "?", color: Tuple[int, int, int] = (255, 255, 255), 
                  name: str = "<Unnamed>", blocks_movement: bool = False, render_order: RenderOrder = RenderOrder.CORPSE,):
         
@@ -22,15 +22,20 @@ class Entity:
         self.name = name
         self.blocks_movement = blocks_movement
         self.render_order = render_order
-        if dungeon_map:
-            self.dungeon_map = dungeon_map
-            dungeon_map.entities.add(self)
-    
+        if parent:
+            # If parent isn't provided now then it will be set later.
+            self.parent = parent
+            parent.entities.add(self)
+            
+    @property
+    def dungeon_map(self) -> DungeonMap:
+        return self.parent.dungeon_map
+            
     def spawn(self: T, dungeon_map: DungeonMap, x: int, y: int) -> T:
         clone = copy.deepcopy(self)
         clone.x = x
         clone.y = y
-        clone.dungeon_map = dungeon_map
+        clone.parent = dungeon_map
         dungeon_map.entities.add(clone)
         return clone
     
@@ -38,10 +43,10 @@ class Entity:
         self.x = x
         self.y = y
         if dungeon_map:
-            if hasattr(self, "dungeon_map"):  
-                self.dungeon_map.entities.remove(self)
-            self.dungeon_map = dungeon_map
-            dungeon_map.entities.add(self)
+            if hasattr(self, "parent"):  # Possibly uninitialized.
+                if self.parent is self.dungeon_map:
+                    self.dungeon_map.entities.remove(self)
+            self.parent = dungeon_map
             
     def move(self, dx: int, dy: int) -> None:
         self.x += dx
@@ -71,7 +76,7 @@ class Actor(Entity):
 
         self.ai: Optional[BaseAI] = ai_cls(self)
         self.fighter = fighter
-        self.fighter.entity = self
+        self.fighter.parent = self
 
     @property
     def is_alive(self) -> bool:

@@ -17,7 +17,11 @@ class DungeonMap:
         self.tiles = np.full((width, height), fill_value = tile_types.wall, order = "F")
         self.visible = np.full((width, height), fill_value = False, order = "F")
         self.encountered = np.full((width, height), fill_value = False, order = "F")
-        
+    
+    @property
+    def dungeon_map(self) -> DungeonMap:
+        return self
+     
     @property
     def actors(self) -> Iterator[Actor]:
         """Iterate over this maps living actors."""
