@@ -23,5 +23,5 @@ hobgoblin = Actor(
     color = (255, 77, 77),
     name = "Hobgoblin",
     ai_cls = HostileEnemy,
-    fighter = Fighter(hp = 15, defense = 3, power = 4),
+    fighter = Fighter(hp = 15, defense = 2, power = 4),
 )
