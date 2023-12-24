@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Tuple
-
+import color
 if TYPE_CHECKING:
     from generator import Generator
     from entities import Entity, Actor
@@ -58,11 +58,17 @@ class Attack(DirectionAction):
 
         damage = self.entity.fighter.power - target.fighter.defense
         attack_desc = f"{self.entity.name.capitalize()} attacks {target.name}"
+        
+        if self.entity is self.generator.player:
+            attack_color = color.player_atk
+        else:
+            attack_color = color.enemy_atk
+            
         if damage > 0:
-            print(f"{attack_desc} for {damage} hit points.")
+            self.generator.message_log.add_message(f"{attack_desc} for {damage} hit points.", attack_color)
             target.fighter.hp -= damage
         else:
-            print(f"{attack_desc} but does no damage.")
+            self.generator.message_log.add_message(f"{attack_desc} but does no damage.", attack_color)
 
 class Movement(DirectionAction):
     
