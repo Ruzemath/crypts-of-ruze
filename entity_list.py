@@ -1,6 +1,7 @@
 from components.ai import HostileEnemy
 from components.fighter import Fighter
 from components.consumable import HealingConsumable
+from components.inventory import Inventory
 from entities import Actor, Item
 
 player = Actor(
@@ -9,6 +10,7 @@ player = Actor(
     name = "Player",
     ai_cls = HostileEnemy,
     fighter = Fighter(hp = 30, defense = 2, power = 5),
+    inventory = Inventory(capacity = 26)
 )
 
 goblin = Actor(
@@ -17,6 +19,7 @@ goblin = Actor(
     name = "Goblin",
     ai_cls = HostileEnemy,
     fighter = Fighter(hp = 10, defense = 0, power = 3),
+    inventory = Inventory(capacity = 0)
 )
 
 hobgoblin = Actor(
@@ -25,6 +28,7 @@ hobgoblin = Actor(
     name = "Hobgoblin",
     ai_cls = HostileEnemy,
     fighter = Fighter(hp = 15, defense = 2, power = 4),
+    inventory = Inventory(capacity = 0)
 )
 
 health_potion = Item(

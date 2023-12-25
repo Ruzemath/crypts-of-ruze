@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Optional, TYPE_CHECKING
 import tcod.event
 from tcod import libtcodpy
-from action import (Action, ActionOfChoice, Leave, Wait)
+from action import (Action, ActionOfChoice, Leave, Wait, PickupAction)
 import color
 import exceptions
 if TYPE_CHECKING:
@@ -102,6 +102,8 @@ class MainGameEventHandler(EventHandler):
             action = Leave(player)
         elif key == tcod.event.KeySym.v:
             self.generator.event_handle = HistoryViewer(self.generator)
+        elif key == tcod.event.KeySym.SPACE:
+            action = PickupAction(player)
 
         return action
 
