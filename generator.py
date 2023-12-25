@@ -5,6 +5,7 @@ from tcod.map import compute_fov
 from input_handler import MainGameEventHandler
 from render_functions import render_bar, render_names_at_mouse_location
 from message_log import MessageLog
+import exceptions
 if TYPE_CHECKING:
     from entities import Actor
     from map import DungeonMap
@@ -22,7 +23,10 @@ class Generator:
     def handle_monster_turns(self) -> None:
         for entity in set(self.dungeon_map.actors) - {self.player}:
             if entity.ai:
-                entity.ai.act()
+                try:
+                    entity.ai.act()
+                except exceptions.Impossible:
+                    pass  # Ignore impossible action exceptions from AI.
              
     
     def update(self) -> None: # Updates the fov of the player

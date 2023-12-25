@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import copy
+import traceback
 import tcod
 import entity_list
 import color
@@ -37,7 +38,14 @@ def main() -> None:
             root_console.clear()
             generator.event_handle.on_render(console = root_console)
             context.present(root_console)
-            generator.event_handle.handle(context)
+            try:
+                for event in tcod.event.wait():
+                    context.convert_event(event)
+                    generator.event_handle.handle(event)
+            except Exception:  # Handle exceptions in game.
+                traceback.print_exc()  # Print error to stderr.
+                # Then print the error to the message log.
+                generator.message_log.add_message(traceback.format_exc(), color.error)
 
 if __name__ == "__main__":
     main()

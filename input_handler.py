@@ -2,7 +2,9 @@ from __future__ import annotations
 from typing import Optional, TYPE_CHECKING
 import tcod.event
 from tcod import libtcodpy
-from action import Action, ActionOfChoice, Leave, Wait
+from action import (Action, ActionOfChoice, Leave, Wait)
+import color
+import exceptions
 if TYPE_CHECKING:
     from generator import Generator
 
@@ -53,10 +55,25 @@ class EventHandler(tcod.event.EventDispatch[Action]):
     def __init__(self, generator: Generator):
         self.generator = generator
         
-    def handle(self, context: tcod.context.Context) -> None:
-        for event in tcod.event.wait():
-            context.convert_event(event)
-            self.dispatch(event) 
+    def handle(self, event: tcod.event.Event) -> None:
+        self.handle_action(self.dispatch(event))
+
+    def handle_action(self, action: Optional[Action]) -> bool:
+        """Handle actions returned from event methods.
+
+        Returns True if the action will advance a turn.
+        """
+        if action is None:
+            return False
+        try:
+            action.act()
+        except exceptions.Impossible as exc:
+            self.generator.message_log.add_message(exc.args[0], color.impossible)
+            return False  # Skip enemy turn on exceptions.
+
+        self.generator.handle_monster_turns()
+        self.generator.update()
+        return True
             
     def ev_mousemotion(self, event: tcod.event.MouseMotion) -> None:
         if self.generator.dungeon_map.bounds_check(event.tile.x, event.tile.y):
@@ -69,17 +86,6 @@ class EventHandler(tcod.event.EventDispatch[Action]):
         self.generator.make(console)
     
 class MainGameEventHandler(EventHandler):
-    def handle(self, context: tcod.context.Context) -> None:
-        for event in tcod.event.wait():
-            context.convert_event(event)
-            action = self.dispatch(event)
-
-            if action is None:
-                continue
-
-            action.act()
-            self.generator.handle_monster_turns()
-            self.generator.update()  # Update the FOV 
             
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
         action: Optional[Action] = None
@@ -100,22 +106,9 @@ class MainGameEventHandler(EventHandler):
         return action
 
 class GameOverEventHandler(EventHandler):
-    def handle(self, context: tcod.context.Context) -> None:
-        for event in tcod.event.wait():
-            action = self.dispatch(event)
-
-            if action is None:
-                continue
-
-            action.act()
-
-    def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
-        action: Optional[Action] = None
-        key = event.sym
-
-        if key == tcod.event.KeySym.ESCAPE:
-            action = Leave(self.generator.player)
-        return action
+   def ev_keydown(self, event: tcod.event.KeyDown) -> None:
+        if event.sym == tcod.event.KeySym.ESCAPE:
+            raise SystemExit()
 
 class HistoryViewer(EventHandler):
     """Print the history on a larger window which can be navigated."""

@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Tuple
 import color
+import exceptions
 if TYPE_CHECKING:
     from generator import Generator
     from entities import Entity, Actor
@@ -54,7 +55,7 @@ class Attack(DirectionAction):
         target = self.target_actor
         
         if not target: # No entity to attack.
-            return  
+            raise exceptions.Impossible("Nothing to attack.")  
 
         damage = self.entity.fighter.power - target.fighter.defense
         attack_desc = f"{self.entity.name.capitalize()} attacks {target.name}"
@@ -76,11 +77,11 @@ class Movement(DirectionAction):
         dest_x, dest_y = self.dest_xy
         
         if not self.generator.dungeon_map.bounds_check(dest_x, dest_y): # Can't Move, Out of Bounds
-            return
+            raise exceptions.Impossible("That way is blocked.")
         if not self.generator.dungeon_map.tiles["walkable"][dest_x, dest_y]: # Can't Move, Tile is Not Walkable
-            return
+             raise exceptions.Impossible("That way is blocked.")
         if self.generator.dungeon_map.get_blocking_entity_at_location(dest_x, dest_y): # Can't Move, Entity on Tile
-            return
+            raise exceptions.Impossible("That way is blocked.")
         
         self.entity.move(self.dx, self.dy)
 
