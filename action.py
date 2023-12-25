@@ -68,6 +68,10 @@ class Leave(Action):
 class Wait(Action):
     def act(self) -> None:
         pass
+
+class DropItem(ItemAction):
+    def act(self) -> None:
+        self.entity.inventory.drop(self.item)
     
 class DirectionAction(Action):
     def __init__(self, entity: Actor, dx: int, dy: int):

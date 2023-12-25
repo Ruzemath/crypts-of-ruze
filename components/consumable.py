@@ -1,7 +1,6 @@
 from __future__ import annotations
-
 from typing import Optional, TYPE_CHECKING
-
+import components.inventory
 import action
 import color
 from components.base_component import BaseComponent
@@ -24,6 +23,13 @@ class Consumable(BaseComponent):
         `action` is the context for this activation.
         """
         raise NotImplementedError()
+    
+    def consume(self) -> None:
+        """Remove the consumed item from its containing inventory."""
+        entity = self.parent
+        inventory = entity.parent
+        if isinstance(inventory, components.inventory.Inventory):
+            inventory.items.remove(entity)
 
 
 class HealingConsumable(Consumable):
@@ -39,5 +45,6 @@ class HealingConsumable(Consumable):
                 f"You consume the {self.parent.name}, and recover {amount_recovered} HP!",
                 color.health_recovered,
             )
+            self.consume()
         else:
             raise Impossible(f"Your health is already full.")
