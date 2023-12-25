@@ -3,7 +3,7 @@ from typing import Optional, TYPE_CHECKING
 import tcod.event
 from tcod import libtcodpy
 import action
-from action import (Action, ActionOfChoice, Leave, Wait, PickupAction)
+from action import (Action, ActionOfChoice, Wait, PickupAction)
 import color
 import exceptions
 if TYPE_CHECKING:
@@ -221,7 +221,7 @@ class MainGameEventHandler(EventHandler):
         elif key in WAIT_KEYS:
             action = Wait(player)
         elif key == tcod.event.KeySym.ESCAPE:
-            action = Leave(player)
+           raise SystemExit()
         elif key == tcod.event.KeySym.v:
             self.generator.event_handle = HistoryViewer(self.generator)
         elif key == tcod.event.KeySym.SPACE:

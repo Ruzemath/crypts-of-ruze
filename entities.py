@@ -1,6 +1,6 @@
 from __future__ import annotations
 import copy
-from typing import Tuple, TypeVar, TYPE_CHECKING, Optional, Type
+from typing import Optional, Tuple, Type, TypeVar, TYPE_CHECKING, Union
 from render_order import RenderOrder
 if TYPE_CHECKING:
     from components.consumable import Consumable
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 T = TypeVar("T", bound = "Entity")
 # Class for all entities including player, items, enemies, and others
 class Entity:
-    parent: DungeonMap
+    parent: Union[DungeonMap, Inventory]
     def __init__(self, parent: Optional[DungeonMap] = None, x: int = 0, y: int = 0, 
                  char: str = "?", color: Tuple[int, int, int] = (255, 255, 255), 
                  name: str = "<Unnamed>", blocks_movement: bool = False, render_order: RenderOrder = RenderOrder.CORPSE,):
@@ -49,6 +49,7 @@ class Entity:
                 if self.parent is self.dungeon_map:
                     self.dungeon_map.entities.remove(self)
             self.parent = dungeon_map
+            dungeon_map.entities.add(self)
             
     def move(self, dx: int, dy: int) -> None:
         self.x += dx

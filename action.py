@@ -61,10 +61,6 @@ class ItemAction(Action):
         """Invoke the items ability, this action will be given to provide context."""
         self.item.consumable.activate(self)
         
-class Leave(Action):
-    def act(self) -> None:
-        raise SystemExit()
-
 class Wait(Action):
     def act(self) -> None:
         pass
