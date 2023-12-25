@@ -17,11 +17,12 @@ def main() -> None:
     min_room_size = 6
     max_rooms = 30
     max_monsters_per_room = 2
+    max_items_per_room = 2
 
     tileset = tcod.tileset.load_tilesheet("dejavu10x10_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD)
     player = copy.deepcopy(entity_list.player)
     generator = Generator(player)
-    generator.dungeon_map = generate_dungeon(max_rooms, min_room_size, max_room_size, map_width, map_height, max_monsters_per_room, generator)
+    generator.dungeon_map = generate_dungeon(max_rooms, min_room_size, max_room_size, map_width, map_height, max_monsters_per_room, max_items_per_room, generator)
     generator.update()
     generator.message_log.add_message("Hello and welcome, adventurer, to the dungeon!", color.welcome_text)
     

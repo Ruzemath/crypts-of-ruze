@@ -4,7 +4,7 @@ import color
 import exceptions
 if TYPE_CHECKING:
     from generator import Generator
-    from entities import Entity, Actor
+    from entities import Entity, Actor, Item
 
 class Action:
     def __init__(self, entity: Actor) -> None:
@@ -18,7 +18,24 @@ class Action:
     def act(self) -> None: # Method is going to be overridden by its subclasses
         raise NotImplementedError()
 
+class ItemAction(Action):
+    def __init__(self, entity: Actor, item: Item, target_xy: Optional[Tuple[int, int]] = None):
+        super().__init__(entity)
+        
+        self.item = item
+        if not target_xy:
+            target_xy = entity.x, entity.y
+        self.target_xy = target_xy
 
+    @property
+    def target_actor(self) -> Optional[Actor]:
+        """Return the actor at this actions destination."""
+        return self.generator.dungeon_map.get_actor_at_location(*self.target_xy)
+
+    def act(self) -> None:
+        """Invoke the items ability, this action will be given to provide context."""
+        self.item.consumable.activate(self)
+        
 class Leave(Action):
     def act(self) -> None:
         raise SystemExit()

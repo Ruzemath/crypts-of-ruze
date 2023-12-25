@@ -29,8 +29,9 @@ class RectRoom:
         return (self.x1 <= other.x2 and self.x2 >= other.x1 and
                 self.y1 <= other.y2 and self.y2 >= other.y1)
     
-def monster_spawn(room: RectRoom, dungeon: DungeonMap, max_monsters: int,) -> None:
+def monster_spawn(room: RectRoom, dungeon: DungeonMap, max_monsters: int, maximum_items: int) -> None:
     number_of_monsters = random.randint(0, max_monsters)
+    number_of_items = random.randint(0, maximum_items)
 
     for i in range(number_of_monsters):
         x = random.randint(room.x1 + 1, room.x2 - 1)
@@ -41,6 +42,13 @@ def monster_spawn(room: RectRoom, dungeon: DungeonMap, max_monsters: int,) -> No
                 entity_list.goblin.spawn(dungeon, x, y)
             else:
                 entity_list.hobgoblin.spawn(dungeon, x, y) 
+    
+    for i in range(number_of_items):
+        x = random.randint(room.x1 + 1, room.x2 - 1)
+        y = random.randint(room.y1 + 1, room.y2 - 1)
+
+        if not any(entity.x == x and entity.y == y for entity in dungeon.entities):
+            entity_list.health_potion.spawn(dungeon, x, y)
         
 
 def L_tunnel(begin: Tuple[int, int], end: Tuple[int, int]) -> Iterator[Tuple[int, int]]:
@@ -58,8 +66,8 @@ def L_tunnel(begin: Tuple[int, int], end: Tuple[int, int]) -> Iterator[Tuple[int
         yield x, y
     
     
-def generate_dungeon(max_rooms: int, min_room_size: int, max_room_size: int, map_width: int, 
-                     map_height: int, max_monsters_per_room: int, generator: Generator) -> DungeonMap:
+def generate_dungeon(max_rooms: int, min_room_size: int, max_room_size: int, map_width: int, map_height: int, 
+                     max_monsters_per_room: int, max_items_per_room: int, generator: Generator) -> DungeonMap:
     
     player = generator.player
     dungeon = DungeonMap(generator, map_width, map_height, [player])
@@ -89,7 +97,7 @@ def generate_dungeon(max_rooms: int, min_room_size: int, max_room_size: int, map
             for x, y in L_tunnel(rooms[-1].center, new_room.center):
                 dungeon.tiles[x, y] = tile_types.floor
         
-        monster_spawn(new_room, dungeon, max_monsters_per_room)
+        monster_spawn(new_room, dungeon, max_monsters_per_room, max_items_per_room)
         rooms.append(new_room)
 
     return dungeon
