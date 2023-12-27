@@ -46,6 +46,12 @@ WAIT_KEYS = {
     tcod.event.KeySym.CLEAR,
 }
 
+CONFIRM_KEYS = {
+    tcod.event.KeySym.RETURN,
+    tcod.event.KeySym.KP_ENTER,
+}
+
+
 CURSOR_Y_KEYS = {
     tcod.event.KeySym.UP: -1,
     tcod.event.KeySym.DOWN: 1,
@@ -207,6 +213,66 @@ class InventoryDropHandler(InventoryEventHandler):
         """Drop this item."""
         return action.DropItem(self.generator.player, item)
 
+class SelectIndexHandler(AskUserEventHandler):
+    """Handles asking the user for an index on the map."""
+
+    def __init__(self, generator: Generator):
+        """Sets the cursor to the player when this handler is constructed."""
+        super().__init__(generator)
+        player = self.generator.player
+        generator.mouse_location = player.x, player.y
+
+    def on_render(self, console: tcod.console.Console) -> None:
+        """Highlight the tile under the cursor."""
+        super().on_render(console)
+        x, y = self.generator.mouse_location
+        console.rgb["bg"][x, y] = color.white
+        console.rgb["fg"][x, y] = color.black
+
+    def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
+        """Check for key movement or confirmation keys."""
+        key = event.sym
+        if key in MOVE_KEYS:
+            modifier = 1  # Holding modifier keys will speed up key movement.
+            if event.mod & (tcod.event.KMOD_LSHIFT | tcod.event.KMOD_RSHIFT):
+                modifier *= 5
+            if event.mod & (tcod.event.KMOD_LCTRL | tcod.event.KMOD_RCTRL):
+                modifier *= 10
+            if event.mod & (tcod.event.KMOD_LALT | tcod.event.KMOD_RALT):
+                modifier *= 20
+
+            x, y = self.generator.mouse_location
+            dx, dy = MOVE_KEYS[key]
+            x += dx * modifier
+            y += dy * modifier
+            # Clamp the cursor index to the map size.
+            x = max(0, min(x, self.generator.dungeon_map.width - 1))
+            y = max(0, min(y, self.generator.dungeon_map.height - 1))
+            self.generator.mouse_location = x, y
+            return None
+        elif key in CONFIRM_KEYS:
+            return self.on_index_selected(*self.generator.mouse_location)
+        return super().ev_keydown(event)
+
+    def ev_mousebuttondown(self, event: tcod.event.MouseButtonDown) -> Optional[Action]:
+        """Left click confirms a selection."""
+        if self.generator.dungeon_map.bounds_check(*event.tile):
+            if event.button == 1:
+                return self.on_index_selected(*event.tile)
+        return super().ev_mousebuttondown(event)
+
+    def on_index_selected(self, x: int, y: int) -> Optional[Action]:
+        """Called when an index is selected."""
+        raise NotImplementedError()
+
+
+class LookHandler(SelectIndexHandler):
+    """Lets the player look around using the keyboard."""
+
+    def on_index_selected(self, x: int, y: int) -> None:
+        """Return to main handler."""
+        self.generator.event_handle = MainGameEventHandler(self.generator)
+
 class MainGameEventHandler(EventHandler):
             
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
@@ -230,6 +296,8 @@ class MainGameEventHandler(EventHandler):
             self.generator.event_handle = InventoryActivateHandler(self.generator)
         elif key == tcod.event.KeySym.o:
             self.generator.event_handle = InventoryDropHandler(self.generator)
+        elif key == tcod.event.KeySym.SLASH:
+            self.generator.event_handle = LookHandler(self.generator)
 
         return action
 
