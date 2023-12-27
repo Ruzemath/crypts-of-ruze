@@ -2,20 +2,17 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from tcod.console import Console
 from tcod.map import compute_fov
-from input_handler import MainGameEventHandler
 from render_functions import render_bar, render_names_at_mouse_location
 from message_log import MessageLog
 import exceptions
 if TYPE_CHECKING:
     from entities import Actor
     from map import DungeonMap
-    from input_handler import EventHandler
     
 class Generator:
     dungeon_map: DungeonMap
     
     def __init__(self, player: Actor):
-        self.event_handle: EventHandler = MainGameEventHandler(self)
         self.player = player
         self.message_log = MessageLog()
         self.mouse_location = (0, 0)
