@@ -5,6 +5,8 @@ from tcod.map import compute_fov
 from render_functions import render_bar, render_names_at_mouse_location
 from message_log import MessageLog
 import exceptions
+import lzma
+import pickle
 if TYPE_CHECKING:
     from entities import Actor
     from map import DungeonMap
@@ -45,3 +47,9 @@ class Generator:
             total_width = 20,
         )
         render_names_at_mouse_location(console = console, x = 21, y = 44, generator = self)
+        
+    def save_as(self, filename: str) -> None:
+        """Save this Generator instance as a compressed file."""
+        save_data = lzma.compress(pickle.dumps(self))
+        with open(filename, "wb") as f:
+            f.write(save_data)
