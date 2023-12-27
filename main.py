@@ -7,6 +7,13 @@ import input_handler
 import setup
 from entities import Entity
 
+
+def save_game_file(handler: input_handler.BaseEventHandler, filename: str) -> None:
+    """If the current event handler has an active Engine then save it."""
+    if isinstance(handler, input_handler.EventHandler):
+        handler.generator.save_as(filename)
+        print("Game File Saved.")
+        
 def main() -> None:
     screen_width = 80
     screen_height = 50
@@ -18,7 +25,7 @@ def main() -> None:
         screen_width,
         screen_height,
         tileset = tileset,
-        title = "Roguelike Tester",
+        title = "Crypts Of Ruze",
         vsync = True,
     ) as context:
         root_console = tcod.console.Console(screen_width, screen_height, order = "F")
@@ -40,10 +47,10 @@ def main() -> None:
         except exceptions.QuitWithoutSaving:
             raise
         except SystemExit:  # Save and quit.
-            # TODO: Add the save function here
+            save_game_file(handler, "savegame.sav")
             raise
         except BaseException:  # Save on any other unexpected exception.
-            # TODO: Add the save function here
+            save_game_file(handler, "savegame.sav")
             raise
 
 if __name__ == "__main__":
