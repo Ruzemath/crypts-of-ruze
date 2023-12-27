@@ -6,8 +6,7 @@ import action
 import color
 from components.base_component import BaseComponent
 from exceptions import Impossible
-from input_handler import SingleRangedAttackHandler, AreaRangedAttackHandler
-
+from input_handler import ActionOrHandler, AreaRangedAttackHandler, SingleRangedAttackHandler
 if TYPE_CHECKING:
     from entities import Actor, Item
 
@@ -15,7 +14,7 @@ if TYPE_CHECKING:
 class Consumable(BaseComponent):
     parent: Item
 
-    def get_action(self, consumer: Actor) -> Optional[action.Action]:
+    def get_action(self, consumer: Actor) -> Optional[ActionOrHandler]:
         """Try to return the action for this item."""
         return action.ItemAction(consumer, self.parent)
 
@@ -37,15 +36,14 @@ class ConfusionConsumable(Consumable):
     def __init__(self, number_of_turns: int):
         self.number_of_turns = number_of_turns
 
-    def get_action(self, consumer: Actor) -> Optional[action.Action]:
+    def get_action(self, consumer: Actor) -> SingleRangedAttackHandler:
         self.generate.message_log.add_message(
             "Select a target location.", color.needs_target
         )
-        self.generate.event_handle = SingleRangedAttackHandler(
+        return SingleRangedAttackHandler(
             self.generate,
             callback = lambda xy: action.ItemAction(consumer, self.parent, xy),
         )
-        return None
 
     def activate(self, action: action.ItemAction) -> None:
         consumer = action.entity
@@ -116,16 +114,15 @@ class FireballDamageConsumable(Consumable):
         self.damage = damage
         self.radius = radius
 
-    def get_action(self, consumer: Actor) -> Optional[action.Action]:
+    def get_action(self, consumer: Actor) -> AreaRangedAttackHandler:
         self.generate.message_log.add_message(
             "Select a target location.", color.needs_target
         )
-        self.generate.event_handle = AreaRangedAttackHandler(
+        return AreaRangedAttackHandler(
             self.generate,
             radius = self.radius,
             callback = lambda xy: action.ItemAction(consumer, self.parent, xy),
         )
-        return None
 
     def activate(self, action: action.ItemAction) -> None:
         target_xy = action.target_xy
