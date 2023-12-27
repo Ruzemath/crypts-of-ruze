@@ -6,7 +6,7 @@ import action
 import color
 from components.base_component import BaseComponent
 from exceptions import Impossible
-from input_handler import SingleRangedAttackHandler
+from input_handler import SingleRangedAttackHandler, AreaRangedAttackHandler
 
 if TYPE_CHECKING:
     from entities import Actor, Item
@@ -110,3 +110,38 @@ class LightningDamageConsumable(Consumable):
             self.consume()
         else:
             raise Impossible("No enemy is close enough to strike.")
+
+class FireballDamageConsumable(Consumable):
+    def __init__(self, damage: int, radius: int):
+        self.damage = damage
+        self.radius = radius
+
+    def get_action(self, consumer: Actor) -> Optional[action.Action]:
+        self.generate.message_log.add_message(
+            "Select a target location.", color.needs_target
+        )
+        self.generate.event_handle = AreaRangedAttackHandler(
+            self.generate,
+            radius = self.radius,
+            callback = lambda xy: action.ItemAction(consumer, self.parent, xy),
+        )
+        return None
+
+    def activate(self, action: action.ItemAction) -> None:
+        target_xy = action.target_xy
+
+        if not self.generate.dungeon_map.visible[target_xy]:
+            raise Impossible("You cannot target an area that you cannot see.")
+
+        targets_hit = False
+        for actor in self.generate.dungeon_map.actors:
+            if actor.distance(*target_xy) <= self.radius:
+                self.generate.message_log.add_message(
+                    f"The {actor.name} is engulfed in a fiery explosion, taking {self.damage} damage!"
+                )
+                actor.fighter.take_damage(self.damage)
+                targets_hit = True
+
+        if not targets_hit:
+            raise Impossible("There are no targets in the radius.")
+        self.consume()

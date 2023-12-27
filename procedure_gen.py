@@ -51,7 +51,9 @@ def monster_spawn(room: RectRoom, dungeon: DungeonMap, max_monsters: int, maximu
             item_chance = random.random()
             if item_chance < 0.5:
                 entity_list.health_potion.spawn(dungeon, x, y)
-            elif item_chance < 0.8:
+            elif item_chance < 0.7:
+                entity_list.fireball_scroll.spawn(dungeon, x, y)
+            elif item_chance < 0.9:
                 entity_list.confusion_scroll.spawn(dungeon, x, y)
             else:
                 entity_list.lightning_scroll.spawn(dungeon, x, y)
