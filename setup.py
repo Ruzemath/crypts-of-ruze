@@ -2,6 +2,9 @@
 from __future__ import annotations
 import copy
 import libtcodpy
+import lzma
+import pickle
+import traceback
 from typing import Optional
 import tcod
 import color
@@ -46,6 +49,13 @@ def new_game() -> Generator:
     generator.message_log.add_message("Hello and welcome, adventurer, to the Crypts Of Ruze!!!", color.welcome_text)
     return generator
 
+def load_game_file(filename: str) -> Generator:
+    """Load a Generator instance from a file."""
+    with open(filename, "rb") as f:
+        generator = pickle.loads(lzma.decompress(f.read()))
+    assert isinstance(generator, Generator)
+    return generator
+
 class MainMenu(input_handler.BaseEventHandler):
     """Handle the main menu rendering and input."""
 
@@ -87,8 +97,13 @@ class MainMenu(input_handler.BaseEventHandler):
         if event.sym in (tcod.event.KeySym.q, tcod.event.KeySym.ESCAPE):
             raise SystemExit()
         elif event.sym == tcod.event.KeySym.c:
-            # TODO: Load the game here
-            pass
+            try:
+                return input_handler.MainGameEventHandler(load_game_file("savegame.sav"))
+            except FileNotFoundError:
+                return input_handler.PopupMessage(self, "No saved game to load.")
+            except Exception as exc:
+                traceback.print_exc()  # Print to stderr.
+                return input_handler.PopupMessage(self, f"Failed to load save:\n{exc}")
         elif event.sym == tcod.event.KeySym.n:
             return input_handler.MainGameEventHandler(new_game())
         return None
