@@ -9,10 +9,11 @@ import lzma
 import pickle
 if TYPE_CHECKING:
     from entities import Actor
-    from map import DungeonMap
+    from map import DungeonMap, GameWorld
     
 class Generator:
     dungeon_map: DungeonMap
+    game_world: GameWorld
     
     def __init__(self, player: Actor):
         self.player = player
