@@ -1,10 +1,16 @@
 from __future__ import annotations
-from typing import Callable, Optional, Tuple, TYPE_CHECKING, Union
-import tcod.event
 import os
-from tcod import libtcodpy
+import libtcodpy
+from typing import Callable, Optional, Tuple, TYPE_CHECKING, Union
+import tcod
 import action
-from action import (Action, ActionOfChoice, Wait, PickupAction)
+from action import (
+    Action,
+    ActionOfChoice,
+    PickupAction,
+    Wait,
+    TakeStairs,
+)
 import color
 import exceptions
 if TYPE_CHECKING:
@@ -363,13 +369,17 @@ class AreaRangedAttackHandler(SelectIndexHandler):
     def on_index_selected(self, x: int, y: int) -> Optional[Action]:
         return self.callback((x, y))
 
-class MainGameEventHandler(EventHandler):
-            
+class MainGameEventHandler(EventHandler):    
+    
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[ActionOrHandler]:
         action: Optional[Action] = None
 
         key = event.sym
+        modifier = event.mod
         player = self.generator.player
+        
+        if key == tcod.event.KeySym.PERIOD and modifier & (tcod.event.KMOD_LSHIFT | tcod.event.KMOD_RSHIFT):
+            return TakeStairs(player)
         
         if key in MOVE_KEYS:
             dx, dy = MOVE_KEYS[key]
