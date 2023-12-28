@@ -60,15 +60,27 @@ class ItemAction(Action):
     def act(self) -> None:
         """Invoke the items ability, this action will be given to provide context."""
         self.item.consumable.activate(self)
-        
+   
+
+class DropItem(ItemAction):
+    def act(self) -> None:
+        self.entity.inventory.drop(self.item)    
+         
 class Wait(Action):
     def act(self) -> None:
         pass
 
-class DropItem(ItemAction):
+class TakeStairs(Action):
     def act(self) -> None:
-        self.entity.inventory.drop(self.item)
-    
+        """
+        Take the stairs, if any exist at the entity's location.
+        """
+        if (self.entity.x, self.entity.y) == self.generator.dungeon_map.stairs_location:
+            self.generator.game_world.generate_floor()
+            self.generator.message_log.add_message("You descend the staircase.", color.descend)
+        else:
+            raise exceptions.Impossible("There are no stairs here.")
+          
 class Direction(Action):
     def __init__(self, entity: Actor, dx: int, dy: int):
         super().__init__(entity)
@@ -134,13 +146,3 @@ class ActionOfChoice(Direction):
         else:
             return Movement(self.entity, self.dx, self.dy).act()
 
-class TakeStairs(Action):
-    def act(self) -> None:
-        """
-        Take the stairs, if any exist at the entity's location.
-        """
-        if (self.entity.x, self.entity.y) == self.generator.dungeon_map.stairs_location:
-            self.generator.game_world.generate_floor()
-            self.generator.message_log.add_message("You descend the staircase.", color.descend)
-        else:
-            raise exceptions.Impossible("There are no stairs here.")

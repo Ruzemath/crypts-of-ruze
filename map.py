@@ -1,13 +1,13 @@
 from __future__ import annotations
 from typing import Iterable, Iterator, Optional, TYPE_CHECKING
-import numpy as np  
+import numpy as np  # type: ignore
 from tcod.console import Console
-from entities import Actor, Item
-from procedure_gen import generate_dungeon
+from entity_list import Actor, Item
 import tile_types
 if TYPE_CHECKING:
     from generator import Generator
     from entities import Entity
+
 
 class DungeonMap:
     def __init__(self, generator: Generator, width: int, height: int, entities: Iterable[Entity] = ()):
@@ -97,6 +97,7 @@ class GameWorld:
         self.current_floor = current_floor
 
     def generate_floor(self) -> None:
+        from procedure_gen import generate_dungeon
         self.current_floor += 1
 
         self.generator.dungeon_map = generate_dungeon(

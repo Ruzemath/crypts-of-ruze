@@ -1,17 +1,17 @@
 """Handle the loading and initialization of game sessions."""
 from __future__ import annotations
 import copy
-import libtcodpy
 import lzma
 import pickle
 import traceback
 from typing import Optional
 import tcod
 import color
+import libtcodpy
 from generator import Generator
 import entity_list
-import input_handler
 from map import GameWorld
+import input_handler
 
 
 # Load the background image and remove the alpha channel.

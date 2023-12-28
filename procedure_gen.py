@@ -1,10 +1,10 @@
 from __future__ import annotations
 import random
-import tile_types
+from typing import Iterator, List, Tuple, TYPE_CHECKING
 import tcod
 import entity_list
 from map import DungeonMap
-from typing import Iterator, Tuple, List, TYPE_CHECKING
+import tile_types
 if TYPE_CHECKING:
     from generator import Generator
 
