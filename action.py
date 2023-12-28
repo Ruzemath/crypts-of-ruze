@@ -69,7 +69,7 @@ class DropItem(ItemAction):
     def act(self) -> None:
         self.entity.inventory.drop(self.item)
     
-class DirectionAction(Action):
+class Direction(Action):
     def __init__(self, entity: Actor, dx: int, dy: int):
         super().__init__(entity)
         self.dx = dx
@@ -92,7 +92,7 @@ class DirectionAction(Action):
     def act(self) -> None:
         raise NotImplementedError()
 
-class Attack(DirectionAction):
+class Attack(Direction):
     def act(self) -> None:
         target = self.target_actor
         
@@ -113,7 +113,7 @@ class Attack(DirectionAction):
         else:
             self.generator.message_log.add_message(f"{attack_desc} but does no damage.", attack_color)
 
-class Movement(DirectionAction):
+class Movement(Direction):
     
     def act(self) -> None:
         dest_x, dest_y = self.dest_xy
@@ -127,9 +127,20 @@ class Movement(DirectionAction):
         
         self.entity.move(self.dx, self.dy)
 
-class ActionOfChoice(DirectionAction):
+class ActionOfChoice(Direction):
     def act(self) -> None:
         if self.target_actor:
             return Attack(self.entity, self.dx, self.dy).act()
         else:
             return Movement(self.entity, self.dx, self.dy).act()
+
+class TakeStairs(Action):
+    def act(self) -> None:
+        """
+        Take the stairs, if any exist at the entity's location.
+        """
+        if (self.entity.x, self.entity.y) == self.generator.dungeon_map.stairs_location:
+            self.generator.game_world.generate_floor()
+            self.generator.message_log.add_message("You descend the staircase.", color.descend)
+        else:
+            raise exceptions.Impossible("There are no stairs here.")
