@@ -11,7 +11,7 @@ import color
 from generator import Generator
 import entity_list
 import input_handler
-from procedure_gen import generate_dungeon
+from map import GameWorld
 
 
 # Load the background image and remove the alpha channel.
@@ -34,7 +34,8 @@ def new_game() -> Generator:
 
     generator = Generator(player)
 
-    generator.dungeon_map = generate_dungeon(
+    generator.game_world = GameWorld(
+        generator = generator,
         max_rooms = max_rooms,
         min_room_size = min_room_size,
         max_room_size = max_room_size,
@@ -42,8 +43,8 @@ def new_game() -> Generator:
         map_height = map_height,
         max_monsters_per_room = max_monsters_per_room,
         max_items_per_room = max_items_per_room,
-        generator = generator,
     )
+    generator.game_world.generate_floor()
     generator.update()
 
     generator.message_log.add_message("Hello and welcome, adventurer, to the Crypts Of Ruze!!!", color.welcome_text)
