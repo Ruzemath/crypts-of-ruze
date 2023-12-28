@@ -17,6 +17,7 @@ class DungeonMap:
         self.tiles = np.full((width, height), fill_value = tile_types.wall, order = "F")
         self.visible = np.full((width, height), fill_value = False, order = "F")
         self.encountered = np.full((width, height), fill_value = False, order = "F")
+        self.stairs_location = (0, 0)
     
     @property
     def dungeon_map(self) -> DungeonMap:
