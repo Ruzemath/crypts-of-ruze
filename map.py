@@ -3,6 +3,7 @@ from typing import Iterable, Iterator, Optional, TYPE_CHECKING
 import numpy as np  
 from tcod.console import Console
 from entities import Actor, Item
+from procedure_gen import generate_dungeon
 import tile_types
 if TYPE_CHECKING:
     from generator import Generator
@@ -66,4 +67,45 @@ class DungeonMap:
                 console.print(
                     x = entity.x, y = entity.y, string = entity.char, fg = entity.color
                 )
-        
+
+class GameWorld:
+    """
+    Holds the settings for the Map, and generates new maps when moving down the stairs.
+    """
+
+    def __init__(
+        self,
+        *,
+        generator: Generator,
+        map_width: int,
+        map_height: int,
+        max_rooms: int,
+        min_room_size: int,
+        max_room_size: int,
+        max_monsters_per_room: int,
+        max_items_per_room: int,
+        current_floor: int = 0
+    ):
+        self.generator = generator
+        self.map_width = map_width
+        self.map_height = map_height
+        self.max_rooms = max_rooms
+        self.min_room_size = min_room_size
+        self.max_room_size = max_room_size
+        self.max_monsters_per_room = max_monsters_per_room
+        self.max_items_per_room = max_items_per_room
+        self.current_floor = current_floor
+
+    def generate_floor(self) -> None:
+        self.current_floor += 1
+
+        self.generator.dungeon_map = generate_dungeon(
+            max_rooms = self.max_rooms,
+            min_room_size = self.min_room_size,
+            max_room_size = self.max_room_size,
+            map_width = self.map_width,
+            map_height = self.map_height,
+            max_monsters_per_room = self.max_monsters_per_room,
+            max_items_per_room = self.max_items_per_room,
+            generator = self.generator,
+        )
