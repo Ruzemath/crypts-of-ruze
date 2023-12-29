@@ -34,7 +34,7 @@ class Level(BaseComponent):
         if xp == 0 or self.level_up_base == 0:
             return
         
-        real_xp = int(xp * self.parent.fighter.exp_mod)
+        real_xp = int(xp * self.parent.fighter.xp_mod)
         self.current_xp += real_xp
         self.generate.message_log.add_message(f"You gain {real_xp} experience points.")
 
@@ -61,7 +61,7 @@ class Level(BaseComponent):
         self.generate.message_log.add_message("You feel your skin hardening!")
         self.increase_level()
     
-    def increase_exp(self, amount: float = 0.2) -> None:
-        self.parent.fighter.exp_mod += amount
+    def increase_xp(self, amount: float = 0.2) -> None:
+        self.parent.fighter.xp_mod += amount
         self.generate.message_log.add_message("You feel your mind becoming clearer!")
         self.increase_level()
