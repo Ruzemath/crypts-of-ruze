@@ -13,6 +13,7 @@ class Fighter(BaseComponent):
         self._hp = hp
         self.defense = defense
         self.power = power
+        self.exp_mod: float = 1.0
 
     @property
     def hp(self) -> int:
@@ -37,8 +38,10 @@ class Fighter(BaseComponent):
         self.parent.blocks_movement = False
         self.parent.ai = None
         self.parent.name = f"remains of {self.parent.name}"
-        self.parent.render_order = RenderOrder.CORPSE     
-    
+        self.parent.render_order = RenderOrder.CORPSE 
+        self.generate.message_log.add_message(death_message, death_message_color)    
+        self.generate.player.level.add_xp(self.parent.level.xp_given)
+        
     def heal(self, amount: int) -> int:
         if self.hp == self.max_hp:
             return 0
