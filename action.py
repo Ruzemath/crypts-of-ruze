@@ -111,7 +111,7 @@ class Attack(Direction):
         if not target: # No entity to attack.
             raise exceptions.Impossible("Nothing to attack.")  
 
-        damage = self.entity.fighter.power - target.fighter.defense
+        damage = max(self.entity.fighter.power - target.fighter.defense, 1)
         attack_desc = f"{self.entity.name.capitalize()} attacks {target.name}"
         
         if self.entity is self.generator.player:
