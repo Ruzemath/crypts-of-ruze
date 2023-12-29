@@ -38,7 +38,7 @@ class PickupAction(Action):
                 item.parent = self.entity.inventory
                 inventory.items.append(item)
 
-                self.generator.message_log.add_message(f"You picked up the {item.name}!", fg = item.color)
+                self.generator.message_log.add_message(f"You picked up the {item.name}!", fg = color.item_picked_up)
                 return
 
         raise exceptions.Impossible("There is nothing here to pick up.")

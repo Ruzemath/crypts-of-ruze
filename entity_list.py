@@ -37,7 +37,7 @@ hobgoblin = Actor(
 
 health_potion = Item(
     char = "!",
-    color = (255, 51, 51),
+    color = (0, 230, 0),
     name = "Health Potion",
     consumable = consumable.HealingConsumable(amount = 4),
 )
@@ -51,7 +51,7 @@ lightning_scroll = Item(
 
 confusion_scroll = Item(
     char = "~",
-    color = (207, 63, 255),
+    color = (255, 179, 255),
     name = "Confusion Scroll",
     consumable = consumable.ConfusionConsumable(number_of_turns = 10),
 )
