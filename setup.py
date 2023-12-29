@@ -27,9 +27,6 @@ def new_game() -> Generator:
     min_room_size = 6
     max_rooms = 30
 
-    max_monsters_per_room = 2
-    max_items_per_room = 2
-
     player = copy.deepcopy(entity_list.player)
 
     generator = Generator(player)
@@ -41,8 +38,6 @@ def new_game() -> Generator:
         max_room_size = max_room_size,
         map_width = map_width,
         map_height = map_height,
-        max_monsters_per_room = max_monsters_per_room,
-        max_items_per_room = max_items_per_room,
     )
     generator.game_world.generate_floor()
     generator.update()

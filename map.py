@@ -82,8 +82,6 @@ class GameWorld:
         max_rooms: int,
         min_room_size: int,
         max_room_size: int,
-        max_monsters_per_room: int,
-        max_items_per_room: int,
         current_floor: int = 0
     ):
         self.generator = generator
@@ -92,8 +90,6 @@ class GameWorld:
         self.max_rooms = max_rooms
         self.min_room_size = min_room_size
         self.max_room_size = max_room_size
-        self.max_monsters_per_room = max_monsters_per_room
-        self.max_items_per_room = max_items_per_room
         self.current_floor = current_floor
 
     def generate_floor(self) -> None:
@@ -106,7 +102,5 @@ class GameWorld:
             max_room_size = self.max_room_size,
             map_width = self.map_width,
             map_height = self.map_height,
-            max_monsters_per_room = self.max_monsters_per_room,
-            max_items_per_room = self.max_items_per_room,
             generator = self.generator,
         )
