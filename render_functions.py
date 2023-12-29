@@ -27,7 +27,7 @@ def render_dungeon_level(console: Console, dungeon_level: int, location: Tuple[i
     Render the level the player is currently on, at the given location.
     """
     x, y = location
-    console.print(x = x, y = y, string = f"Dungeon level: {dungeon_level}")
+    console.print(x = x, y = y, string = f"Dungeon level: {dungeon_level}", fg = (121, 121, 210))
 
 def render_names_at_mouse_location(console: Console, x: int, y: int, generator: Generator) -> None:
     mouse_x, mouse_y = generator.mouse_location

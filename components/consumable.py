@@ -4,6 +4,7 @@ import components.ai
 import components.inventory
 import action
 import color
+import entity_list
 from components.base_component import BaseComponent
 from exceptions import Impossible
 from input_handler import ActionOrHandler, AreaRangedAttackHandler, SingleRangedAttackHandler
@@ -102,7 +103,7 @@ class LightningDamageConsumable(Consumable):
 
         if target:
             self.generate.message_log.add_message(
-                f"A lighting bolt strikes the {target.name} with a loud thunder, for {self.damage} damage!"
+                f"A lighting bolt strikes the {target.name} with a loud thunder, for {self.damage} damage!", fg = entity_list.lightning_scroll.color
             )
             target.fighter.take_damage(self.damage)
             self.consume()
@@ -134,7 +135,7 @@ class FireballDamageConsumable(Consumable):
         for actor in self.generate.dungeon_map.actors:
             if actor.distance(*target_xy) <= self.radius:
                 self.generate.message_log.add_message(
-                    f"The {actor.name} is engulfed in a fiery explosion, taking {self.damage} damage!"
+                    f"The {actor.name} is engulfed in a fiery explosion, taking {self.damage} damage!", fg = entity_list.fireball_scroll.color
                 )
                 actor.fighter.take_damage(self.damage)
                 targets_hit = True

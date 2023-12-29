@@ -37,7 +37,7 @@ hobgoblin = Actor(
 
 health_potion = Item(
     char = "!",
-    color = (127, 0, 255),
+    color = (255, 51, 51),
     name = "Health Potion",
     consumable = consumable.HealingConsumable(amount = 4),
 )

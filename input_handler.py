@@ -206,23 +206,23 @@ class CharacterScreenEventHandler(AskUserEventHandler):
         )
 
         console.print(
-            x = x + 1, y = y + 2, string = f"Level: {self.generator.player.level.current_level}"
+            x = x + 1, y = y + 2, string = f"Level: {self.generator.player.level.current_level}", fg = (102, 179, 255)
         )
         console.print(
             x = x + 1, y = y + 3,
-            string = f"XP For Level {self.generator.player.level.current_level + 1}: {self.generator.player.level.experience_to_next_level}",
+            string = f"XP For Level {self.generator.player.level.current_level + 1}: {self.generator.player.level.experience_to_next_level}", fg = (153, 255, 153)
         )
         console.print(
-            x = x + 1, y = y + 4, string = f"XP Modifier: {int(self.generator.player.fighter.xp_mod * 100)}%"
+            x = x + 1, y = y + 4, string = f"XP Modifier: {int(self.generator.player.fighter.xp_mod * 100)}%", fg = (153, 255, 153)
         )
         console.print(
-            x = x + 1, y = y + 5, string = f"Current XP: {self.generator.player.level.current_xp}"
+            x = x + 1, y = y + 5, string = f"Current XP: {self.generator.player.level.current_xp}", fg = (153, 255, 153)
         ) 
         console.print(
-            x = x + 1, y = y + 6, string = f"Attack: {self.generator.player.fighter.power}"
+            x = x + 1, y = y + 6, string = f"Attack: {self.generator.player.fighter.power}", fg = (128, 0, 0)
         )
         console.print(
-            x = x + 1, y = y + 7, string = f"Defense: {self.generator.player.fighter.defense}"
+            x = x + 1, y = y + 7, string = f"Defense: {self.generator.player.fighter.defense}", fg = (204, 153, 102)
         )
         
         

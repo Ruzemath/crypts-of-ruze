@@ -36,10 +36,10 @@ class Level(BaseComponent):
         
         real_xp = int(xp * self.parent.fighter.xp_mod)
         self.current_xp += real_xp
-        self.generate.message_log.add_message(f"You gain {real_xp} experience points.")
+        self.generate.message_log.add_message(f"You gain {real_xp} experience points.", fg = (153, 255, 153))
 
         if self.requires_level_up:
-            self.generate.message_log.add_message(f"You advance to level {self.current_level + 1}!")
+            self.generate.message_log.add_message(f"You advance to level {self.current_level + 1}!", fg = (102, 179, 255))
 
     def increase_level(self) -> None:
         self.current_xp -= self.experience_to_next_level
@@ -48,20 +48,20 @@ class Level(BaseComponent):
     def increase_max_hp(self, amount: int = 20) -> None:
         self.parent.fighter.max_hp += amount
         self.parent.fighter.hp += amount
-        self.generate.message_log.add_message("You feel a warmth swirling inside!")
+        self.generate.message_log.add_message("You feel a warmth swirling inside!", fg = (0, 102, 0))
         self.increase_level()
 
     def increase_power(self, amount: int = 1) -> None:
         self.parent.fighter.power += amount
-        self.generate.message_log.add_message("You feel your hands fill with power!")
+        self.generate.message_log.add_message("You feel your hands fill with power!", fg = (128, 0, 0))
         self.increase_level()
 
     def increase_defense(self, amount: int = 1) -> None:
         self.parent.fighter.defense += amount
-        self.generate.message_log.add_message("You feel your skin hardening!")
+        self.generate.message_log.add_message("You feel your skin hardening!", fg = (204, 153, 102))
         self.increase_level()
     
     def increase_xp(self, amount: float = 0.2) -> None:
         self.parent.fighter.xp_mod += amount
-        self.generate.message_log.add_message("You feel your mind becoming clearer!")
+        self.generate.message_log.add_message("You feel your mind becoming clearer!", fg = (153, 255, 153))
         self.increase_level()

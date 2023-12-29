@@ -19,4 +19,4 @@ class Inventory(BaseComponent):
         self.items.remove(item)
         item.place(self.parent.x, self.parent.y, self.dungeon_map)
 
-        self.generate.message_log.add_message(f"You dropped the {item.name}.")
+        self.generate.message_log.add_message(f"You dropped the {item.name}.", fg = item.color)
