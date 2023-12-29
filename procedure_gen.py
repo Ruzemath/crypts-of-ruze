@@ -8,6 +8,20 @@ import tile_types
 if TYPE_CHECKING:
     from generator import Generator
 
+max_items_by_floor = [(1, 1),(4, 2),]
+
+max_monsters_by_floor = [(1, 2),(4, 3),(6, 5),]
+
+def get_max_value_for_floor(max_value_by_floor: List[Tuple[int, int]], floor: int) -> int:
+    current_value = 0
+    
+    for floor_minimum, value in max_value_by_floor:
+        if floor_minimum > floor:
+            break
+        else:
+            current_value = value
+    return current_value
+
 class RectRoom:
     def __init__(self, x: int, y: int, width: int, height: int):
         self.x1 = x
@@ -29,9 +43,9 @@ class RectRoom:
         return (self.x1 <= other.x2 and self.x2 >= other.x1 and
                 self.y1 <= other.y2 and self.y2 >= other.y1)
     
-def monster_spawn(room: RectRoom, dungeon: DungeonMap, max_monsters: int, maximum_items: int) -> None:
-    number_of_monsters = random.randint(0, max_monsters)
-    number_of_items = random.randint(0, maximum_items)
+def monster_spawn(room: RectRoom, dungeon: DungeonMap, floor_number: int,) -> None:
+    number_of_monsters = random.randint(0, get_max_value_for_floor(max_monsters_by_floor, floor_number))
+    number_of_items = random.randint(0, get_max_value_for_floor(max_items_by_floor, floor_number))
 
     for i in range(number_of_monsters):
         x = random.randint(room.x1 + 1, room.x2 - 1)
@@ -74,8 +88,8 @@ def L_tunnel(begin: Tuple[int, int], end: Tuple[int, int]) -> Iterator[Tuple[int
         yield x, y
     
     
-def generate_dungeon(max_rooms: int, min_room_size: int, max_room_size: int, map_width: int, map_height: int, 
-                     max_monsters_per_room: int, max_items_per_room: int, generator: Generator) -> DungeonMap:
+def generate_dungeon(max_rooms: int, min_room_size: int, max_room_size: int, 
+                     map_width: int, map_height: int, generator: Generator) -> DungeonMap:
     
     player = generator.player
     dungeon = DungeonMap(generator, map_width, map_height, [player])
@@ -108,7 +122,7 @@ def generate_dungeon(max_rooms: int, min_room_size: int, max_room_size: int, map
                 
             center_of_last_room = new_room.center
         
-        monster_spawn(new_room, dungeon, max_monsters_per_room, max_items_per_room)
+        monster_spawn(new_room, dungeon, generator.game_world.current_floor)
         dungeon.tiles[center_of_last_room] = tile_types.stairs
         dungeon.stairs_location = center_of_last_room
         rooms.append(new_room)
