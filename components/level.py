@@ -34,7 +34,7 @@ class Level(BaseComponent):
         if xp == 0 or self.level_up_base == 0:
             return
         
-        real_exp: int = (xp * self.parent.fighter.exp_mod)
+        real_exp = int(xp * self.parent.fighter.exp_mod)
         self.current_xp += real_exp
         self.generate.message_log.add_message(f"You gain {real_exp} experience points.")
 
