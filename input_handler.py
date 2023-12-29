@@ -180,7 +180,52 @@ class AskUserEventHandler(EventHandler):
         By default this returns to the main event handler.
         """
         return MainGameEventHandler(self.generator)
+    
+class CharacterScreenEventHandler(AskUserEventHandler):
+    TITLE = "Character Information"
 
+    def on_render(self, console: tcod.console.Console) -> None:
+        super().on_render(console)
+
+        if self.generator.player.x <= 30:
+            x = 40
+        else:
+            x = 0
+
+        y = 0
+        width = len(self.TITLE) + 4
+        console.draw_frame(
+            x = x,
+            y = y,
+            width = width,
+            height = 9,
+            title = self.TITLE,
+            clear = True,
+            fg = (255, 255, 255),
+            bg = (0, 0, 0),
+        )
+
+        console.print(
+            x = x + 1, y = y + 2, string = f"Level: {self.generator.player.level.current_level}"
+        )
+        console.print(
+            x = x + 1, y = y + 3,
+            string = f"XP For Level {self.generator.player.level.current_level + 1}: {self.generator.player.level.experience_to_next_level}",
+        )
+        console.print(
+            x = x + 1, y = y + 4, string = f"XP Modifier: {int(self.generator.player.fighter.xp_mod * 100)}%"
+        )
+        console.print(
+            x = x + 1, y = y + 5, string = f"Current XP: {self.generator.player.level.current_xp}"
+        ) 
+        console.print(
+            x = x + 1, y = y + 6, string = f"Attack: {self.generator.player.fighter.power}"
+        )
+        console.print(
+            x = x + 1, y = y + 7, string = f"Defense: {self.generator.player.fighter.defense}"
+        )
+        
+        
 class LevelUpEventHandler(AskUserEventHandler):
     TITLE = "Level Up"
 
@@ -223,7 +268,7 @@ class LevelUpEventHandler(AskUserEventHandler):
         console.print(
             x = x + 1,
             y = 7,
-            string = f"d) Exp Gain (+20% exp, from {int(self.generator.player.fighter.exp_mod * 100)}%)",
+            string = f"d) Xp Gain (+20% exp, from {int(self.generator.player.fighter.xp_mod * 100)}%)",
         )
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[ActionOrHandler]:
@@ -239,7 +284,7 @@ class LevelUpEventHandler(AskUserEventHandler):
             elif index == 2:
                 player.level.increase_defense()
             else:
-                player.level.increase_exp()
+                player.level.increase_xp()
         else:
             self.generator.message_log.add_message("Invalid entry.", color.invalid)
             return None
@@ -468,6 +513,8 @@ class MainGameEventHandler(EventHandler):
             return InventoryActivateHandler(self.generator)
         elif key == tcod.event.KeySym.o:
             return InventoryDropHandler(self.generator)
+        elif key == tcod.event.KeySym.m:
+            return CharacterScreenEventHandler(self.generator)
         elif key == tcod.event.KeySym.SLASH:
             return LookHandler(self.generator)
 
