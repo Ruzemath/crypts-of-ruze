@@ -30,7 +30,7 @@ hobgoblin = Actor(
     color = (255, 77, 77),
     name = "Hobgoblin",
     ai_cls = HostileEnemy,
-    fighter = Fighter(hp = 15, defense = 2, power = 4),
+    fighter = Fighter(hp = 15, defense = 1, power = 4),
     inventory = Inventory(capacity = 0),
     level = Level(xp_given = 100),
 )
@@ -39,7 +39,7 @@ health_potion = Item(
     char = "!",
     color = (0, 230, 0),
     name = "Health Potion",
-    consumable = consumable.HealingConsumable(amount = 4),
+    consumable = consumable.HealingConsumable(amount = 5),
 )
 
 lightning_scroll = Item(
