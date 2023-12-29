@@ -127,6 +127,8 @@ class EventHandler(BaseEventHandler):
         if self.handle_action(action_or_state):  # A valid action was performed.
             if not self.generator.player.is_alive: # The player was killed sometime during or after the action.
                 return GameOverEventHandler(self.generator)
+            elif self.generator.player.level.requires_level_up:
+                return LevelUpEventHandler(self.generator)
             return MainGameEventHandler(self.generator)  # Return to the main handler.
         return self
 
@@ -179,6 +181,76 @@ class AskUserEventHandler(EventHandler):
         """
         return MainGameEventHandler(self.generator)
 
+class LevelUpEventHandler(AskUserEventHandler):
+    TITLE = "Level Up"
+
+    def on_render(self, console: tcod.console.Console) -> None:
+        super().on_render(console)
+
+        if self.generator.player.x <= 30:
+            x = 40
+        else:
+            x = 0
+
+        console.draw_frame(
+            x = x,
+            y = 0,
+            width = 35,
+            height = 10,
+            title = self.TITLE,
+            clear = True,
+            fg = (255, 255, 255),
+            bg = (0, 0, 0),
+        )
+
+        console.print(x = x + 1, y = 1, string = "Congratulations! You level up!")
+        console.print(x = x + 1, y = 2, string = "Select an attribute to increase.")
+        console.print(
+            x = x + 1,
+            y = 4,
+            string = f"a) Health (+20 HP, from {self.generator.player.fighter.max_hp})",
+        )
+        console.print(
+            x = x + 1,
+            y = 5,
+            string=f"b) Strength (+1 attack, from {self.generator.player.fighter.power})",
+        )
+        console.print(
+            x = x + 1,
+            y = 6,
+            string = f"c) Toughness (+1 defense, from {self.generator.player.fighter.defense})",
+        )
+        console.print(
+            x = x + 1,
+            y = 7,
+            string = f"d) Exp Gain (+20% exp, from {int(self.generator.player.fighter.exp_mod * 100)}%)",
+        )
+
+    def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[ActionOrHandler]:
+        player = self.generator.player
+        key = event.sym
+        index = key - tcod.event.KeySym.a
+
+        if 0 <= index <= 3:
+            if index == 0:
+                player.level.increase_max_hp()
+            elif index == 1:
+                player.level.increase_power()
+            elif index == 2:
+                player.level.increase_defense()
+            else:
+                player.level.increase_exp()
+        else:
+            self.generator.message_log.add_message("Invalid entry.", color.invalid)
+            return None
+        return super().ev_keydown(event)
+
+    def ev_mousebuttondown(self, event: tcod.event.MouseButtonDown) -> Optional[ActionOrHandler]:
+        """
+        Don't allow the player to click to exit the menu, like normal.
+        """
+        return None
+    
 class InventoryEventHandler(AskUserEventHandler):
     """This handler lets the user select an item.
 
