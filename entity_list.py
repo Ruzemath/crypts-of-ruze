@@ -2,6 +2,7 @@ from components.ai import HostileEnemy
 from components.fighter import Fighter
 from components.inventory import Inventory
 from components import consumable, equippable
+from components.equipment import Equipment
 from entities import Actor, Item
 from components.level import Level
 
@@ -10,6 +11,7 @@ player = Actor(
     color = (255, 255, 255),
     name = "Player",
     ai_cls = HostileEnemy,
+    equipment = Equipment(),
     fighter = Fighter(hp = 30, defense = 2, power = 5),
     inventory = Inventory(capacity = 26),
     level = Level(level_up_base = 200),
@@ -20,6 +22,7 @@ goblin = Actor(
     color = (51, 153, 51),
     name = "Goblin",
     ai_cls = HostileEnemy,
+    equipment = Equipment(),
     fighter = Fighter(hp = 10, defense = 0, power = 3),
     inventory = Inventory(capacity = 0),
     level = Level(xp_given = 35),
@@ -30,6 +33,7 @@ hobgoblin = Actor(
     color = (255, 77, 77),
     name = "Hobgoblin",
     ai_cls = HostileEnemy,
+    equipment = Equipment(),
     fighter = Fighter(hp = 15, defense = 1, power = 4),
     inventory = Inventory(capacity = 0),
     level = Level(xp_given = 100),
