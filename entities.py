@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from components.fighter import Fighter
     from components.inventory import Inventory
     from components.equippable import Equippable
+    from components.equipment import Equipment
     from map import DungeonMap
     from components.level import Level
 
@@ -76,6 +77,7 @@ class Actor(Entity):
         ai_cls: Type[BaseAI],
         fighter: Fighter,
         inventory: Inventory,
+        equipment: Equipment,
         level: Level,
     ):
         super().__init__(
@@ -93,6 +95,8 @@ class Actor(Entity):
         self.fighter.parent = self
         self.inventory = inventory
         self.inventory.parent = self
+        self.equipment: Equipment = equipment
+        self.equipment.parent = self
         self.level = level
         self.level.parent = self
 
