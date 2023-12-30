@@ -268,7 +268,7 @@ class LevelUpEventHandler(AskUserEventHandler):
         console.print(
             x = x + 1,
             y = 7,
-            string = f"d) Xp Gain (+20% exp, from {int(self.generator.player.fighter.xp_mod * 100)}%)",
+            string = f"d) Xp Gain (+20% exp, from {int(self.generator.player.fighter.base_xp_mod * 100)}%)",
         )
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[ActionOrHandler]:
@@ -338,7 +338,11 @@ class InventoryEventHandler(AskUserEventHandler):
         if number_of_items_in_inventory > 0:
             for i, item in enumerate(self.generator.player.inventory.items):
                 item_key = chr(ord("a") + i)
-                console.print(x + 1, y + i + 1, f"({item_key}) {item.name}")
+                is_equipped = self.generator.player.equipment.item_is_equipped(item)
+                item_string = f"({item_key}) {item.name}"
+                if is_equipped:
+                    item_string = f"{item_string} (E)"
+                console.print(x + 1, y + i + 1, item_string)
         else:
             console.print(x + 1, y + 1, "(Empty)")
 
@@ -367,8 +371,13 @@ class InventoryActivateHandler(InventoryEventHandler):
     TITLE = "Select an item to use"
 
     def on_item_selected(self, item: Item) -> Optional[ActionOrHandler]:
-        """Return the action for the selected item."""
-        return item.consumable.get_action(self.generator.player)
+        if item.consumable:
+            # Return the action for the selected item.
+            return item.consumable.get_action(self.generator.player)
+        elif item.equippable:
+            return action.EquipAction(self.generator.player, item)
+        else:
+            return None
 
 
 class InventoryDropHandler(InventoryEventHandler):

@@ -52,16 +52,16 @@ class Level(BaseComponent):
         self.increase_level()
 
     def increase_power(self, amount: int = 1) -> None:
-        self.parent.fighter.power += amount
+        self.parent.fighter.base_power += amount
         self.generate.message_log.add_message("You feel your hands fill with power!", fg = (128, 0, 0))
         self.increase_level()
 
     def increase_defense(self, amount: int = 1) -> None:
-        self.parent.fighter.defense += amount
+        self.parent.fighter.base_defense += amount
         self.generate.message_log.add_message("You feel your skin hardening!", fg = (204, 153, 102))
         self.increase_level()
     
     def increase_xp(self, amount: float = 0.2) -> None:
-        self.parent.fighter.xp_mod += amount
+        self.parent.fighter.base_xp_mod += amount
         self.generate.message_log.add_message("You feel your mind becoming clearer!", fg = (153, 255, 153))
         self.increase_level()

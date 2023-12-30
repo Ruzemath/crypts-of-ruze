@@ -14,12 +14,12 @@ class Equippable(BaseComponent):
         equipment_type: EquipmentType,
         power_bonus: int = 0,
         defense_bonus: int = 0,
-        health_bonus: int = 0,
+        xp_bonus: float = 0.0,
     ):
         self.equipment_type = equipment_type
         self.power_bonus = power_bonus
         self.defense_bonus = defense_bonus
-        self.health_bonus = health_bonus
+        self.xp_bonus = xp_bonus
 
 
 class BronzeDagger(Equippable):
@@ -40,9 +40,9 @@ class SteelPlate(Equippable):
 
 class BronzeRing(Equippable):
     def __init__(self) -> None:
-        super().__init__(equipment_type = EquipmentType.RING, health_bonus = 25)
+        super().__init__(equipment_type = EquipmentType.RING, xp_bonus = 0.25)
 
 class SteelRing(Equippable):
     def __init__(self) -> None:
-        super().__init__(equipment_type = EquipmentType.RING, health_bonus = 75)
+        super().__init__(equipment_type = EquipmentType.RING, xp_bonus = 0.5)
 

@@ -45,17 +45,17 @@ class Equipment(BaseComponent):
         return bonus
     
     @property
-    def health_bonus(self) -> int:
+    def xp_bonus(self) -> float:
         bonus = 0
 
         if self.weapon is not None and self.weapon.equippable is not None:
-            bonus += self.weapon.equippable.health_bonus
+            bonus += self.weapon.equippable.xp_bonus
             
         if self.armor is not None and self.armor.equippable is not None:
-            bonus += self.armor.equippable.health_bonus
+            bonus += self.armor.equippable.xp_bonus
         
         if self.ring is not None and self.ring.equippable is not None:
-            bonus += self.ring.equippable.health_bonus
+            bonus += self.ring.equippable.xp_bonus
 
         return bonus
 

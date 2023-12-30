@@ -65,8 +65,18 @@ class ItemAction(Action):
 
 class DropItem(ItemAction):
     def act(self) -> None:
-        self.entity.inventory.drop(self.item)    
+        if self.entity.equipment.item_is_equipped(self.item):
+            self.entity.equipment.toggle_equip(self.item)
+        self.entity.inventory.drop(self.item)   
          
+class EquipAction(Action):
+    def __init__(self, entity: Actor, item: Item):
+        super().__init__(entity)
+        self.item = item
+
+    def act(self) -> None:
+        self.entity.equipment.toggle_equip(self.item)
+                
 class Wait(Action):
     def act(self) -> None:
         pass
