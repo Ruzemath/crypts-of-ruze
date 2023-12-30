@@ -1,7 +1,7 @@
 from components.ai import HostileEnemy
 from components.fighter import Fighter
-from components import consumable
 from components.inventory import Inventory
+from components import consumable, equippable
 from entities import Actor, Item
 from components.level import Level
 
@@ -62,3 +62,18 @@ fireball_scroll = Item(
     name = "Fireball Scroll",
     consumable = consumable.FireballDamageConsumable(damage = 12, radius = 3),
 )
+
+bronze_dagger = Item(char = "/", color = (205, 127, 50), name = "Bronze Dagger", equippable = equippable.BronzeDagger())
+
+steel_sword = Item(char = "/", color = (113, 121, 126), name = "Steel Sword", equippable = equippable.SteelSword())
+
+leather_tunic = Item(char = "[", color = (98, 74, 46), name = "Leather Tunic", equippable = equippable.LeatherTunic())
+
+steel_plate = Item(char = "[", color = (113, 121, 126), name = "Steel Plate", equippable = equippable.SteelPlate())
+
+bronze_ring = Item(char = "^", color = (205, 127, 50), name = "Bronze Ring", equippable = equippable.BronzeRing())
+
+steel_ring = Item(char = "^", color = (113, 121, 126), name = "Steel Ring", equippable = equippable.SteelRing())
+
+
+
