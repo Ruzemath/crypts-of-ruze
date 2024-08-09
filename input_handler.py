@@ -253,37 +253,42 @@ class LevelUpEventHandler(AskUserEventHandler):
         console.print(
             x = x + 1,
             y = 4,
-            string = f"a) Health (+20 HP, from {self.generator.player.fighter.max_hp})",
+            string = f"1) Health (+20 HP, from {self.generator.player.fighter.max_hp})",
         )
         console.print(
             x = x + 1,
             y = 5,
-            string=f"b) Strength (+1 attack, from {self.generator.player.fighter.power})",
+            string=f"2) Strength (+1 attack, from {self.generator.player.fighter.power})",
         )
         console.print(
             x = x + 1,
             y = 6,
-            string = f"c) Toughness (+1 defense, from {self.generator.player.fighter.defense})",
+            string = f"3) Toughness (+1 defense, from {self.generator.player.fighter.defense})",
         )
         console.print(
             x = x + 1,
             y = 7,
-            string = f"d) Xp Gain (+20% exp, from {int(self.generator.player.fighter.base_xp_mod * 100)}%)",
+            string = f"4) Xp Gain (+20% exp, from {int(self.generator.player.fighter.base_xp_mod * 100)}%)",
         )
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[ActionOrHandler]:
         player = self.generator.player
         key = event.sym
-        index = key - tcod.event.KeySym.a
-
-        if 0 <= index <= 3:
+        key_to_index = {
+        tcod.event.KeySym.N1: 0,
+        tcod.event.KeySym.N2: 1,
+        tcod.event.KeySym.N3: 2,
+        tcod.event.KeySym.N4: 3,
+    }
+        if key in key_to_index:
+            index = key_to_index[key]
             if index == 0:
                 player.level.increase_max_hp()
             elif index == 1:
                 player.level.increase_power()
             elif index == 2:
                 player.level.increase_defense()
-            else:
+            elif index == 3:
                 player.level.increase_xp()
         else:
             self.generator.message_log.add_message("Invalid entry.", color.invalid)
