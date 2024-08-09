@@ -1,5 +1,5 @@
 # CRYPTS OF RUZE
-## A RougueLike Inspired Dungeon Crawler
+## A Roguelike Inspired Dungeon Crawler
 
 
 ### Features
