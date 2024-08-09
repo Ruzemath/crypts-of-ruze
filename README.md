@@ -17,16 +17,16 @@ You will explore a dungeon filled with enemies and treasures in this roguelike w
 [C] Key: Continue Game File <br/>
 [Q] Key: Quit Game <br/>
 
-**In-Game**
-Arrow Keys/WASD Keys: Movement
-[I] Key: Open Equip Items Menu 
-[O] Key: Open Drop Items Menu
-[A-Z] Keys: Select Items From Inventory Menus (Equip/Drop)
-[1-4] Keys: Select Character Enchantment 
-[Shift] + [>] Keys: Decend To Next Floor
-[M] Key: Open Character Sheet
-[V] Key: Message/Log History
-[ESC] Key: Exit Menus
+**In-Game** <br/>
+Arrow Keys/WASD Keys: Movement <br/>
+[I] Key: Open Equip Items Menu  <br/>
+[O] Key: Open Drop Items Menu <br/>
+[A-Z] Keys: Select Items From Inventory Menus (Equip/Drop) <br/>
+[1-4] Keys: Select Character Enchantment <br/>
+[Shift] + [>] Keys: Decend To Next Floor <br/>
+[M] Key: Open Character Sheet <br/>
+[V] Key: Message/Log History <br/>
+[ESC] Key: Exit Menus <br/>
 
 
 
