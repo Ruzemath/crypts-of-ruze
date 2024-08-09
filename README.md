@@ -11,11 +11,11 @@ Character Development: Level up and enhance your abilities to survive deeper lev
 ### Gameplay
 You will explore a dungeon filled with enemies and treasures in this roguelike with the goal being to delve as deep as possible while managing your resources with your 24 inventory size limit and avoiding permadeath. As you progress, you will encounter tougher enemies and find better loot.
 
-### Controls
-**Main Menu**
-[N] Key: New Game File
-[C] Key: Continue Game File
-[Q] Key: Quit Game
+### Controls <br/>
+**Main Menu** <br/>
+[N] Key: New Game File <br/>
+[C] Key: Continue Game File <br/>
+[Q] Key: Quit Game <br/>
 
 **In-Game**
 Arrow Keys/WASD Keys: Movement
