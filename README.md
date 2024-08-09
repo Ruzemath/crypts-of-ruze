@@ -11,7 +11,7 @@ Character Development: Level up and enhance your abilities to survive deeper lev
 
 
 ### Gameplay
-You will explore a dungeon filled with enemies and treasures in this roguelike with the goal being to delve as deep as possible while managing your resources with your 24 inventory size limit and avoiding permadeath. As you progress, you will encounter tougher enemies and find better loot.
+You will explore a dungeon filled with enemies and treasures in this roguelike with the goal being to delve as deep as possible while managing your resources with your 24 inventory size limit and avoiding permadeath. As you progress and delve deeper into the dungeon, you will encounter tougher enemies and find better loot.
 
 
 ### Controls <br/>
