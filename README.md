@@ -28,8 +28,6 @@ Arrow Keys/WASD Keys: Movement <br/>
 [V] Key: Message/Log History <br/>
 [ESC] Key: Exit Menus <br/>
 
-
-
 ### Installation
 Run the following command in your terminal: **pip install -r requirements.txt**
 
