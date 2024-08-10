@@ -1,7 +1,7 @@
 # Crypts Of Ruze
 A Roguelike Inspired Dungeon Crawler
 
-<img src="example_dungeon.png" alt="Example Of A Dungeon" width="300"/>
+<img src="example_dungeon.png" alt="Example Of A Dungeon" width="1200"/>
 
 
 ### Features
