@@ -1,5 +1,5 @@
-# CRYPTS OF RUZE
-## A RougueLike Inspired Dungeon Crawler
+# Crypts Of Ruze
+A Roguelike Inspired Dungeon Crawler
 
 
 ### Features
@@ -34,12 +34,16 @@ Arrow Keys/WASD Keys: Movement <br/>
 
 
 ### Installation
-Run the following command in your terminal: **pip install -r requirements.txt**
-
+Run the following command in your terminal: 
+```bash
+pip install -r requirements.txt
+```
 
 ### Usage
-To start the game, run the following command in your terminal: **python main.py**
-
+To start the game, run the following command in your terminal: 
+```bash
+python main.py
+```
 
 ### Acknowledgments
 This is a classic roguelike game built with Python, following the [Yet Another Roguelike Tutorial](https://rogueliketutorials.com/tutorials/tcod/v2/) and using the [TCOD library](https://python-tcod.readthedocs.io/en/latest/)
