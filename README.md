@@ -34,7 +34,10 @@ Arrow Keys/WASD Keys: Movement <br/>
 
 
 ### Installation
-Run the following command in your terminal: **pip install -r requirements.txt**
+Run the following command in your terminal: 
+```bash
+pip install -r requirements.txt
+```
 
 
 ### Usage
