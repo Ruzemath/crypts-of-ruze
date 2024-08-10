@@ -1,6 +1,8 @@
 # Crypts Of Ruze
 A Roguelike Inspired Dungeon Crawler
 
+<img src="example_dungeon.png" alt="Example Of A Dungeon" width="300"/>
+
 
 ### Features
 Procedural Generation: Every playthrough offers a unique dungeon layout.
@@ -23,6 +25,7 @@ You will explore a dungeon filled with enemies and treasures in this roguelike w
 
 **In-Game** <br/>
 Arrow Keys/WASD Keys: Movement <br/>
+[Space] Key: Pick Up Items <br/>
 [I] Key: Open Equip Items Menu  <br/>
 [O] Key: Open Drop Items Menu <br/>
 [A-Z] Keys: Select Items From Inventory Menus (Equip/Drop) <br/>
