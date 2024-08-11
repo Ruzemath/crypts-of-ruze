@@ -5,11 +5,11 @@ A Roguelike Inspired Dungeon Crawler
 
 
 ### Features
-Procedural Generation: Every playthrough offers a unique dungeon layout.
-Turn-Based Gameplay: Strategic combat and exploration, one step at a time.
-Permadeath: Permanent consequences for your actions—no second chances!
-Inventory System: Collect and manage weapons, armor, potions, and spells.
-Character Development: Level up and enhance your abilities to survive deeper levels.
+**Procedural Generation**: Every playthrough offers a unique dungeon layout. <br/>
+**Turn-Based Gameplay**: Strategic combat and exploration, one step at a time. <br/>
+**Permadeath**: Permanent consequences for your actions—no second chances! <br/>
+**Inventory System**: Collect and manage weapons, armor, potions, and spells. <br/>
+**Character Development**: Level up and enhance your abilities to survive deeper levels. <br/>
 
 
 ### Gameplay
