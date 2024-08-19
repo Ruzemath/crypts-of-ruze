@@ -1,4 +1,4 @@
-# Crypts Of Ruze
+# Labyrinth of Ruze
 A Roguelike Inspired Dungeon Crawler
 
 <img src="example_dungeon.png" alt="Example Of A Dungeon" width="1500"/>
