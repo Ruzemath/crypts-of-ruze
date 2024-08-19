@@ -42,7 +42,7 @@ def new_game() -> Generator:
     generator.game_world.generate_floor()
     generator.update()
 
-    generator.message_log.add_message("Hello and welcome, adventurer, to the Crypts Of Ruze!!!", color.welcome_text)
+    generator.message_log.add_message("Hello and welcome, adventurer, to the Labyrinth of Ruze!!!", color.welcome_text)
     return generator
 
 def load_game_file(filename: str) -> Generator:
