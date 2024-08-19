@@ -62,7 +62,7 @@ class MainMenu(input_handler.BaseEventHandler):
         console.print(
             console.width // 2,
             console.height // 2 - 4,
-            "CRYPTS OF RUZE",
+            "LABYRINTH OF RUZE",
             fg = color.menu_title,
             alignment = libtcodpy.CENTER,
         )
